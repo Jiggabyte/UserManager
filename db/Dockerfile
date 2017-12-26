@@ -31,11 +31,11 @@ RUN apt-get install -y mongodb-10gen
 RUN mkdir -p /data/db
 
 # Make directory/file writable
-RUN sudo chmod 777 /data/db
+RUN chmod 755 /data/db
 
 ##################### INSTALLATION END #####################
 
-# Expose the default port
+# Expose the default ports
 EXPOSE 27017
 EXPOSE 28017
 

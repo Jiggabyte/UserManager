@@ -2,12 +2,11 @@
 
 echo 'Setting up MongoDB...'
 echo ''
-docker build -f db/DockerFile --tag jbyte/mdb .
+docker build -t my_jbdb ./db
 
 echo ''
-docker stop mongoDB
-docker rm mongoDB
-docker run --detach --publish 27017:27017 --name mongoDB jbyte/mdb
+
+docker run -i -t my_jbdb
 
 if [ ! -s ".env" ] ; then
 	echo 'Creating ENV file...'
@@ -21,12 +20,11 @@ fi
 
 echo 'Setting up Node App...'
 echo ''
-docker build -f app/DockerFile --tag jbyte/user .
+docker build -t my_jbnd ./app
 
 echo ''
-docker stop userM
-docker rm userM
-docker run --detach --link mongoDB:mongoDB --publish 3000:3000 --name userM jbyte/user
+
+docker run -i -t my_jbnd
 
 if [ -x /usr/bin/curl ] ; then
 	echo -n "Do you want to populate the database? (y/n)? "
