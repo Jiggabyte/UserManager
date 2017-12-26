@@ -1,0 +1,47 @@
+#!/bin/bash
+
+echo 'Setting up MongoDB...'
+echo ''
+docker build -f db/DockerFile --tag jbyte/mdb .
+
+echo ''
+docker stop mongoDB
+docker rm mongoDB
+docker run --detach --publish 27017:27017 --name mongoDB jbyte/mdb
+
+if [ ! -s ".env" ] ; then
+	echo 'Creating ENV file...'
+	echo ''
+
+	cp .env-sample .env
+else
+	echo '.env file exists...'
+	echo ''
+fi
+
+echo 'Setting up Node App...'
+echo ''
+docker build -f app/DockerFile --tag jbyte/user .
+
+echo ''
+docker stop userM
+docker rm userM
+docker run --detach --link mongoDB:mongoDB --publish 3000:3000 --name userM jbyte/user
+
+if [ -x /usr/bin/curl ] ; then
+	echo -n "Do you want to populate the database? (y/n)? "
+	read answer
+	if echo "$answer" | grep -iq "^y" ;then
+		echo '@loading...'
+		echo ''
+		curl -X POST http://localhost:3000/users -d "name=John Doe&email=john.doe@gmail.com&password=johndoe"
+		curl -X POST http://localhost:3000/users -d "name=Jane Doe&email=jane.doe@gmail.com&password=janedoe"
+	else
+		echo '@loading skipped.'
+	fi
+
+	open http://localhost:3000/users
+fi
+
+echo 'Ready ...'
+exit 0;
