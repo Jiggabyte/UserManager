@@ -30,12 +30,12 @@ if [ -x /usr/bin/curl ] ; then
 	echo -n "Do you want to populate the database? (y/n)? "
 	read answer
 	if echo "$answer" | grep -iq "^y" ;then
-		echo '@loading...'
+		echo '@populating...'
 		echo ''
 		curl -X POST http://localhost:3000/users -d "name=John Doe&email=john.doe@gmail.com&password=johndoe"
 		curl -X POST http://localhost:3000/users -d "name=Jane Doe&email=jane.doe@gmail.com&password=janedoe"
 	else
-		echo '@loading skipped.'
+		echo '@populating skipped.'
 	fi
 
 	open http://localhost:3000/users

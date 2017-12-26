@@ -17,7 +17,7 @@ RUN apt-get update
 RUN apt-get -f install
 
 # Install nodejs
-RUN apt-get install -y nodejs
+RUN apt-get install -y nodejs-legacy
 
 # Install npm
 RUN apt-get install -y npm
@@ -39,5 +39,8 @@ RUN npm install
 # Expose port
 EXPOSE 3000
 
+# Set working directory
+WORKDIR /UserManager
+
 # Start app server
-CMD ["npm"  "start"]
+CMD ["npm","start"]
