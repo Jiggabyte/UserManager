@@ -36,5 +36,8 @@ RUN npm install
 
 ##################### INSTALLATION END #####################
 
+# Expose port
+EXPOSE 3000
+
 # Start app server
 CMD ["npm"  "start"]
